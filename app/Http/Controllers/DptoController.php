@@ -14,17 +14,7 @@ class DptoController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Dpto::get();
     }
 
     /**
@@ -35,7 +25,29 @@ class DptoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $departamento = new Dpto();
+
+        if ($departamento) {
+            $departamento -> dpto = $request -> dpto;
+            $departamento -> location = $request -> location;
+            $departamento -> save();
+
+            $response = array (
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Registro creado correctamente'
+            );
+
+        } else {
+            $response = array (
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Error al guardar el registro'
+            );
+        }
+
+        return $response;
+        
     }
 
     /**
@@ -44,20 +56,14 @@ class DptoController extends Controller
      * @param  \App\Models\Dpto  $dpto
      * @return \Illuminate\Http\Response
      */
-    public function show(Dpto $dpto)
+    public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Dpto  $dpto
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Dpto $dpto)
-    {
-        //
+        return Dpto::findOrFail($id);
+        $response = array (
+            'status' => 'success',
+            'code' => 200,
+            'message' => 'Registros cargados correctamente'
+        );
     }
 
     /**
@@ -67,9 +73,22 @@ class DptoController extends Controller
      * @param  \App\Models\Dpto  $dpto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Dpto $dpto)
+    public function update(Request $request, $id)
     {
-        //
+        $departamento = Dpto::where('id', $id)->update(
+                [ 
+                    'dpto' => $request->get('dpto'),
+                    'location' => $request->get('location')
+                ]
+            );
+
+            $response = array (
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Registro actualizado'
+            );
+        
+        return $response;
     }
 
     /**
@@ -78,8 +97,23 @@ class DptoController extends Controller
      * @param  \App\Models\Dpto  $dpto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Dpto $dpto)
+    public function destroy($id)
     {
-        //
+        $departamento = Dpto::findOrFail($id);
+
+        if($departamento -> delete()){
+            $response = array (
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Registro eliminado correctamente!'
+            );
+        }else {
+           $response = array (
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Error al eliminar departamento!'
+            );
+        }
+        return $response;
     }
 }
