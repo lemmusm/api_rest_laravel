@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// ROUTES FOR USERS TABLE
+    Route::apiResource('users', 'UserController');
+// ROUTES FOR DPTOS TABLE
+    Route::apiResource('dptos', 'DptoController');
+// ROUTES FOR TICKETS TABLE
+    Route::apiResource('tickets', 'TicketController');
