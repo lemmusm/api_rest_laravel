@@ -14,17 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return User::with('dpto')->get();
     }
 
     /**
@@ -35,7 +25,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = new User();
+
+        $validateData = $request -> validate([
+            'uid' => 'required|unique:users'
+        ]);
+
+        if ($user) {
+            $user -> uid = $equest -> uid;
+            $user -> username = $equest -> username;
+            $user -> email = $equest -> email;
+            $user -> urlavatar = $equest -> urlavatar;
+            $user -> dpto_id = '32';
+            $user -> save();
+
+            $response = array (
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Perfil guardado'
+            );
+
+        } else {
+            $response = array (
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Error al guadar usuario'
+            );
+        }
+
+        return $response;
+        
     }
 
     /**
@@ -44,20 +63,16 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
-    }
+        return User::with('dpto')->findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
+        $response = array (
+            'status' => 'success',
+            'code' => '200',
+            'message' => 'ID encontrado!'
+        );
+        return $response;
     }
 
     /**
@@ -67,9 +82,21 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $user = Users::where('uid', $id)->update(
+            [
+                'dpto_id' => $request -> get('dpto_id')
+            ]
+        );
+
+        $response = array (
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Perfil actualizado'
+            );
+
+        return $response;
     }
 
     /**
@@ -78,8 +105,23 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if($user -> delete()){
+            $response = array (
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Registro eliminado correctamente!'
+            );
+        }else {
+           $response = array (
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Error al eliminar registro!'
+            );
+        }
+        return $response;
     }
 }
