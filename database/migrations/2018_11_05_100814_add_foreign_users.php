@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDptosTable extends Migration
+class AddForeignUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateDptosTable extends Migration
      */
     public function up()
     {
-        Schema::create('dptos', function (Blueprint $table) {
-            $table->increments('id')->unique();
-            $table->string('dpto');
-            $table->string('location')->nullable();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('dpto_id')->references('id')->on('dptos')->onDelete('cascade');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateDptosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dptos');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 }
