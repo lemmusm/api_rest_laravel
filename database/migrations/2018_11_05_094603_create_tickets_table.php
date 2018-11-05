@@ -18,9 +18,10 @@ class CreateTicketsTable extends Migration
             $table->string('token_id')->unique();
             $table->string('user_uid')->index();
             $table->string('service')->nullable();
-            $table->string('description');
-            $table->string('diagnostic');
+            $table->string('description', 1000);
+            $table->string('diagnostic', 1000);
             $table->string('status');
+            $table->string('support');
             $table->timestamps();
         });
     }

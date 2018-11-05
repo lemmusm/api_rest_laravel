@@ -12,9 +12,9 @@ class User extends Model
     // protected $finduid = 'uid';
 
     public function tickets() {
-        return $this->hasMany(Tickets::class, 'user_id', 'uid');
+        return $this->hasMany(Ticket::class, 'user_id', 'uid');
     }
     public function dpto() {
-        return $this->belongsTo(Dptos::class, 'dpto_id', 'id'); 
+        return $this->belongsTo(Dpto::class, 'dpto_id', 'id'); 
     }
 }

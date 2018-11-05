@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Dpto;
 use Faker\Generator as Faker;
 
 /*
@@ -13,8 +14,14 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(App\Models\User::class, function (Faker $faker) {
     return [
-        //
+        'uid' => $faker -> md5,
+        'dpto_id' => function() {
+            return Dpto::all()->random();
+        },
+        'username' => $faker -> name,
+        'email' => $faker -> email,
+        'urlavatar' => $faker -> url
     ];
 });
