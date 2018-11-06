@@ -9,7 +9,6 @@ class User extends Model
     protected $table = 'users';
     protected $primaryKey = 'uid';
     public $incrementing = false;
-    // protected $finduid = 'uid';
 
     public function tickets() {
         return $this->hasMany(Ticket::class, 'user_id', 'uid');

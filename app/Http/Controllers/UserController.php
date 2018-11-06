@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -32,19 +32,17 @@ class UserController extends Controller
         ]);
 
         if ($user) {
-            $user -> uid = $equest -> uid;
-            $user -> username = $equest -> username;
-            $user -> email = $equest -> email;
-            $user -> urlavatar = $equest -> urlavatar;
+            $user -> uid = $request -> uid;
+            $user -> username = $request -> username;
+            $user -> email = $request -> email;
+            $user -> urlavatar = $request -> urlavatar;
             $user -> dpto_id = '32';
             $user -> save();
-
             $response = array (
                 'status' => 'success',
                 'code' => 200,
                 'message' => 'Perfil guardado'
             );
-
         } else {
             $response = array (
                 'status' => 'error',
@@ -52,7 +50,6 @@ class UserController extends Controller
                 'message' => 'Error al guadar usuario'
             );
         }
-
         return $response;
         
     }
@@ -65,13 +62,22 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return User::with('dpto')->findOrFail($id);
-
-        $response = array (
-            'status' => 'success',
-            'code' => '200',
-            'message' => 'ID encontrado!'
-        );
+        $userid = User::with('dpto')->find($id);
+        if (!is_null($userid)) {
+           $response = array (
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Error'
+            );
+        } else {
+            return $userid;
+            $response = array (
+                'status' => 'success',
+                'code' => '200',
+                'message' => 'ID encontrado!'
+            );
+        }
+        
         return $response;
     }
 
